@@ -1,0 +1,167 @@
+using System;
+using System.Text;
+using System.Text.Encodings;
+
+namespace Snake
+{
+    internal class Program
+    {
+        static int height = 25;
+        static int width = 25;
+        static int score = 0;
+        static int snakeSpeed = 100;
+        static int snakeLength = 10;
+        static int[] snakeX = new int[100];
+        static int[] snakeY = new int[100];
+        static int appleX, appleY;
+        static bool gameOver = false;
+        static ConsoleKey currentDirection = ConsoleKey.RightArrow;
+        static void Main(string[] args)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.OutputEncoding = Encoding.UTF8;
+            Console.CursorVisible = false;
+            Snake();
+            Border();
+            Position();
+            while (!gameOver)
+            {
+                if (Console.KeyAvailable)
+                {
+                    ConsoleKey key = Console.ReadKey(true).Key;
+                    if (ValidDirection(key))
+                        currentDirection = key;
+                }
+                MoveSnake();
+                DrawSnake();
+                BorderRepair();
+                Console.SetCursorPosition(0, height + 2);
+                Console.WriteLine("Your score: " + score);
+                Thread.Sleep(150);
+            }
+            Console.WriteLine("Final score is: " + score);
+        }
+        static bool ValidDirection(ConsoleKey key)
+        {
+            return (key == ConsoleKey.LeftArrow && currentDirection != ConsoleKey.RightArrow) ||
+                   (key == ConsoleKey.RightArrow && currentDirection != ConsoleKey.LeftArrow) ||
+                   (key == ConsoleKey.UpArrow && currentDirection != ConsoleKey.DownArrow) ||
+                   (key == ConsoleKey.DownArrow && currentDirection != ConsoleKey.UpArrow);
+        }
+        static void Border()
+        {
+            Console.Clear();
+            Console.SetCursorPosition(0, 0);
+            for (int xpos = 0; xpos < width; xpos++)
+            {
+                Console.Write('■' + " ");
+            }
+            for (int ypos = 0; ypos < height; ypos++)
+            {
+                Console.WriteLine('■');
+            }
+            for (int zpos = 0; zpos < height; zpos++)
+            {
+                Console.SetCursorPosition(2 * width, 0 + zpos);
+                Console.Write('■');
+            }
+            Console.SetCursorPosition(0, height);
+            for (int xpos = 0; xpos < width; xpos++)
+            {
+                Console.Write('■' + " ");
+            }
+            Console.Write('■');
+        }
+        static void Position()
+        {
+            int parameterY = 20;
+            int parameterX = 40;
+            char apple = 'ó';
+            Random random = new Random();
+            appleX = random.Next(1, parameterX);
+            appleY = random.Next(1, parameterY);
+            Console.SetCursorPosition(appleX, appleY);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(apple);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.SetCursorPosition(0, parameterY);
+            Console.Write('■');
+        }
+        static void Snake()
+        {
+            Thread.Sleep(snakeSpeed);
+            for (int i = 0; i < snakeLength; i++)
+            {
+                snakeX[i] = 10 - i;
+                snakeY[i] = 10;
+            }
+        }
+        static void DrawSnake()
+        {
+            for (int i = 0; i < snakeLength; i++)
+            {
+                Console.SetCursorPosition(snakeX[i], snakeY[i]);
+                Console.Write('O');
+            }
+        }
+        static void MoveSnake()
+        {
+            Console.SetCursorPosition(snakeX[snakeLength - 1], snakeY[snakeLength - 1]);
+            Console.Write(' ');
+            for (int i = snakeLength - 1; i > 0; i--)
+            {
+                snakeX[i] = snakeX[i - 1];
+                snakeY[i] = snakeY[i - 1];
+            }
+            switch (currentDirection)
+            {
+                case ConsoleKey.LeftArrow or ConsoleKey.A: snakeX[0]--; break;
+                case ConsoleKey.RightArrow or ConsoleKey.D: snakeX[0]++; break;
+                case ConsoleKey.UpArrow or ConsoleKey.W: snakeY[0]--; break;
+                case ConsoleKey.DownArrow or ConsoleKey.S: snakeY[0]++; break;
+            }
+            if (snakeX[0] <= 0 || snakeX[0] >= width * 2 || snakeY[0] <= 0 || snakeY[0] >= height)
+            {
+                gameOver = true;
+                return;
+            }
+            for (int i = 1; i < snakeLength; i++)
+            {
+                if (snakeX[0] == snakeX[i] && snakeY[0] == snakeY[i])
+                {
+                    gameOver = true;
+                    return;
+                }
+            }
+            if (snakeX[0] == appleX && snakeY[0] == appleY)
+            {
+                score++;
+                snakeLength++;
+                Position();
+            }
+        }
+        static void BorderRepair()
+        {
+            Console.SetCursorPosition(0, 0);
+            for (int xpos = 0; xpos < width; xpos++)
+            {
+                Console.Write('■' + " ");
+            }
+            for (int ypos = 0; ypos < height; ypos++)
+            {
+                Console.WriteLine('■');
+            }
+            for (int zpos = 0; zpos < height; zpos++)
+            {
+                Console.SetCursorPosition(2 * width, 0 + zpos);
+                Console.Write('■');
+            }
+            Console.SetCursorPosition(0, height);
+            for (int xpos = 0; xpos < width; xpos++)
+            {
+                Console.Write('■' + " ");
+            }
+            Console.Write('■');
+        }
+    }
+}
