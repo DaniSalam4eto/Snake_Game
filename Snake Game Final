@@ -21,8 +21,8 @@ namespace Snake
             Console.ForegroundColor = ConsoleColor.Green;
             Console.OutputEncoding = Encoding.UTF8;
             Console.CursorVisible = false;
-            Console.WriteLine("Dificultys - easy / medium / hard / extreme");
-            Console.Write("Select dificulty: ");
+            Console.WriteLine("difficulties - easy / medium / hard / extreme");
+            Console.Write("Select difficulty: ");
             string dificulty = Console.ReadLine().ToLower();
             switch (dificulty)
             {
