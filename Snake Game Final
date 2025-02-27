@@ -10,7 +10,7 @@ namespace Snake
         static int width = 25;
         static int score = 0;
         static int snakeSpeed = 100;
-        static int snakeLength = 10;
+        static int snakeLength = 3;
         static int[] snakeX = new int[100];
         static int[] snakeY = new int[100];
         static int appleX, appleY;
