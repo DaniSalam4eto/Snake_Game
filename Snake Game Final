@@ -21,6 +21,17 @@ namespace Snake
             Console.ForegroundColor = ConsoleColor.Green;
             Console.OutputEncoding = Encoding.UTF8;
             Console.CursorVisible = false;
+            Console.WriteLine("Dificultys - easy / medium / hard / extreme");
+            Console.Write("Select dificulty: ");
+            string dificulty = Console.ReadLine().ToLower();
+            switch (dificulty)
+            {
+                case "easy": snakeSpeed = 200; break;
+                case "medium": snakeSpeed = 100; break;
+                case "hard": snakeSpeed = 50; break;
+                case "extreme": snakeSpeed = 20; break;
+                case "insanity": snakeSpeed = 5; break;
+            }
             Snake();
             Border();
             Position();
@@ -37,7 +48,7 @@ namespace Snake
                 BorderRepair();
                 Console.SetCursorPosition(0, height + 2);
                 Console.WriteLine("Your score: " + score);
-                Thread.Sleep(150);
+                Thread.Sleep(snakeSpeed);
             }
             Console.WriteLine("Final score is: " + score);
         }
@@ -50,6 +61,7 @@ namespace Snake
         }
         static void Border()
         {
+            Console.ForegroundColor = ConsoleColor.White;
             Console.Clear();
             Console.SetCursorPosition(0, 0);
             for (int xpos = 0; xpos < width; xpos++)
@@ -71,6 +83,7 @@ namespace Snake
                 Console.Write('■' + " ");
             }
             Console.Write('■');
+            Console.ForegroundColor = ConsoleColor.Green;
         }
         static void Position()
         {
@@ -142,6 +155,7 @@ namespace Snake
         }
         static void BorderRepair()
         {
+            Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(0, 0);
             for (int xpos = 0; xpos < width; xpos++)
             {
@@ -162,6 +176,7 @@ namespace Snake
                 Console.Write('■' + " ");
             }
             Console.Write('■');
+            Console.ForegroundColor = ConsoleColor.Green;
         }
     }
 }
