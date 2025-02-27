@@ -25,7 +25,8 @@ namespace Snake
             Console.OutputEncoding = Encoding.UTF8;
             Console.CursorVisible = false;
             Console.WriteLine("Hello and welcome to the snake game! Press enter to continue:");
-            string nothing = Console.ReadLine();
+            Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine("Do you want to see the controls and rules? Type Yes or No");
             string rules = Console.ReadLine().ToLower();
             if (rules == "yes")
@@ -86,7 +87,7 @@ namespace Snake
         static void Border()
         {
             Console.WriteLine("Select difficulty:");
-            Console.WriteLine("Map sizes: easy 10, medium 20, hard 30.");
+            Console.WriteLine("Difficulty: easy, medium, hard or extream");
             difficulty = Console.ReadLine().ToLower();
             Console.Clear();
             switch (difficulty)
@@ -105,6 +106,16 @@ namespace Snake
                     hight = 25;
                     width = 25;
                     speed = 50;
+                    break;
+                case "extream":
+                    hight = 25;
+                    width = 25;
+                    speed = 20;
+                    break;
+                case "ininsanity":
+                    hight = 25;
+                    width = 25;
+                    speed = 5;
                     break;
             }
             Console.SetCursorPosition(0, 0);
@@ -144,6 +155,14 @@ namespace Snake
                     parameterX = 50;
                     break;
                 case "hard":
+                    parameterY = 25;
+                    parameterX = 50;
+                    break;
+                case "extream":
+                    parameterY = 25;
+                    parameterX = 50;
+                    break;
+                case "ininsanity":
                     parameterY = 25;
                     parameterX = 50;
                     break;
