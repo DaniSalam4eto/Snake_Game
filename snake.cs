@@ -15,12 +15,13 @@ namespace Snake
         static int[] snakeY = new int[100];
         static int appleX, appleY;
         static bool gameOver = false;
-        static int speed = 200; 
-        static ConsoleKey currentDirection = ConsoleKey.RightArrow; 
+        static int speed = 200;
+        static ConsoleKey currentDirection = ConsoleKey.RightArrow;
+        static ConsoleKey lastDirection = ConsoleKey.RightArrow; 
 
         static void Main(string[] args)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
+            Console.ForegroundColor = ConsoleColor.White; 
             Console.OutputEncoding = Encoding.UTF8;
             Console.CursorVisible = false;
             Console.WriteLine("Hello and welcome to the snake game! Press enter to continue:");
@@ -44,7 +45,15 @@ namespace Snake
                     if (key == ConsoleKey.LeftArrow || key == ConsoleKey.RightArrow ||
                         key == ConsoleKey.UpArrow || key == ConsoleKey.DownArrow)
                     {
-                        currentDirection = key;
+                
+                        if ((key == ConsoleKey.LeftArrow && currentDirection != ConsoleKey.RightArrow) ||
+                            (key == ConsoleKey.RightArrow && currentDirection != ConsoleKey.LeftArrow) ||
+                            (key == ConsoleKey.UpArrow && currentDirection != ConsoleKey.DownArrow) ||
+                            (key == ConsoleKey.DownArrow && currentDirection != ConsoleKey.UpArrow))
+                        {
+                            lastDirection = currentDirection;
+                            currentDirection = key;
+                        }
                     }
                 }
                 MoveSnake(currentDirection);
@@ -52,7 +61,7 @@ namespace Snake
                 BorderRepair();
                 Console.SetCursorPosition(0, hight + 2);
                 Console.WriteLine("Your score: " + score);
-                Thread.Sleep(speed); 
+                Thread.Sleep(speed);
             }
             Console.WriteLine("Final score is: " + score);
         }
@@ -83,19 +92,19 @@ namespace Snake
             switch (difficulty)
             {
                 case "easy":
-                    hight = 10;
-                    width = 10;
+                    hight = 25;
+                    width = 25;
                     speed = 200;
                     break;
                 case "medium":
-                    hight = 20;
-                    width = 20;
-                    speed = 100; 
+                    hight = 25;
+                    width = 25;
+                    speed = 100;
                     break;
                 case "hard":
-                    hight = 30;
-                    width = 30;
-                    speed = 50; 
+                    hight = 25;
+                    width = 25;
+                    speed = 50;
                     break;
             }
             Console.SetCursorPosition(0, 0);
@@ -127,16 +136,16 @@ namespace Snake
             switch (difficulty)
             {
                 case "easy":
-                    parameterY = 10;
-                    parameterX = 20;
+                    parameterY = 25;
+                    parameterX = 50;
                     break;
                 case "medium":
-                    parameterY = 20;
-                    parameterX = 40;
+                    parameterY = 25;
+                    parameterX = 50;
                     break;
                 case "hard":
-                    parameterY = 30;
-                    parameterX = 60;
+                    parameterY = 25;
+                    parameterX = 50;
                     break;
             }
             char apple = 'ó';
@@ -144,9 +153,11 @@ namespace Snake
             appleX = random.Next(1, parameterX);
             appleY = random.Next(1, parameterY);
             Console.SetCursorPosition(appleX, appleY);
+            Console.ForegroundColor = ConsoleColor.Red; 
             Console.WriteLine(apple);
             Console.SetCursorPosition(0, parameterY);
             Console.Write('■');
+            Console.ForegroundColor = ConsoleColor.White; 
         }
 
         static void Snake()
@@ -160,22 +171,35 @@ namespace Snake
 
         static void DrawSnake()
         {
+            Console.ForegroundColor = ConsoleColor.Green; 
             for (int i = 0; i < snakeLength; i++)
             {
                 Console.SetCursorPosition(snakeX[i], snakeY[i]);
                 Console.Write('O');
             }
+            Console.ForegroundColor = ConsoleColor.White; 
         }
 
         static void MoveSnake(ConsoleKey key)
         {
+            for (int i = 1; i < snakeLength; i++)
+            {
+                if (snakeX[i] == snakeX[0] && snakeY[i] == snakeY[0])
+                {
+                    gameOver = true;
+                    return;
+                }
+            }
+
             Console.SetCursorPosition(snakeX[snakeLength - 1], snakeY[snakeLength - 1]);
             Console.Write(' ');
+
             for (int i = snakeLength - 1; i > 0; i--)
             {
                 snakeX[i] = snakeX[i - 1];
                 snakeY[i] = snakeY[i - 1];
             }
+
             switch (key)
             {
                 case ConsoleKey.LeftArrow:
@@ -191,6 +215,7 @@ namespace Snake
                     snakeY[0]++;
                     break;
             }
+
             if (snakeX[0] <= 0 || snakeX[0] >= width * 2 || snakeY[0] <= 0 || snakeY[0] >= hight)
             {
                 gameOver = true;
