@@ -142,31 +142,9 @@ namespace Snake
 
         static void Position()
         {
-            int parameterY = 0;
-            int parameterX = 0;
-            switch (difficulty)
-            {
-                case "easy":
-                    parameterY = 25;
-                    parameterX = 50;
-                    break;
-                case "medium":
-                    parameterY = 25;
-                    parameterX = 50;
-                    break;
-                case "hard":
-                    parameterY = 25;
-                    parameterX = 50;
-                    break;
-                case "extream":
-                    parameterY = 25;
-                    parameterX = 50;
-                    break;
-                case "ininsanity":
-                    parameterY = 25;
-                    parameterX = 50;
-                    break;
-            }
+            int parameterY = 25;
+            int parameterX = 50;
+          
             char apple = 'ó';
             Random random = new Random();
             appleX = random.Next(1, parameterX);
